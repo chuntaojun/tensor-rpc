@@ -1,0 +1,23 @@
+subprojects {
+    apply plugin: 'java'
+
+    group 'com.tensor.rpc.org'
+    version '0.0.1'
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        compile group: 'io.netty', name: 'netty-all', version: '4.1.33.Final'
+        compile group: 'cglib', name: 'cglib', version: '3.2.12'
+        implementation 'com.esotericsoftware:kryo:5.0.0-RC4'
+    }
+}
