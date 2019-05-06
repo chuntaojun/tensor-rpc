@@ -9,6 +9,16 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RpcRegister {
 
-    String serverAddr() default "127.0.0.1:8250";
+    /**
+     *
+     * @return {@link String}
+     */
+    String serverAddr() default "127.0.0.1:8007";
+
+    /**
+     *
+     * @return {@link String}
+     */
+    String serviceName();
 
 }

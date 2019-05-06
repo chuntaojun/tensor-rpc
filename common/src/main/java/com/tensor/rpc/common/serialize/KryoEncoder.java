@@ -1,6 +1,5 @@
 package com.tensor.rpc.common.serialize;
 
-import com.tensor.rpc.common.pojo.RpcMethodRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -8,12 +7,13 @@ import io.netty.handler.codec.MessageToByteEncoder;
 /**
  * @author liaochuntao
  */
-public class KryoEncoder extends MessageToByteEncoder<RpcMethodRequest> {
+public class KryoEncoder extends MessageToByteEncoder {
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, RpcMethodRequest msg, ByteBuf out) throws Exception {
-        KryoSerializer.serialize(msg, out);
-        ctx.flush();
+    protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
+        byte[] bytes = KryoSerializer.serialize(msg);
+        int length = bytes.length;
+        out.writeInt(length);
+        out.writeBytes(bytes);
     }
-
 }

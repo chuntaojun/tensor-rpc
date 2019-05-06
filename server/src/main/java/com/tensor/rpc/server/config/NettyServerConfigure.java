@@ -1,5 +1,7 @@
 package com.tensor.rpc.server.config;
 
+import com.tensor.rpc.common.serialize.KryoDecoder;
+import com.tensor.rpc.common.serialize.KryoEncoder;
 import com.tensor.rpc.server.handler.HeartChannelHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -9,6 +11,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 /**
  * @author liaochuntao
@@ -22,11 +26,14 @@ public class NettyServerConfigure {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 64 * 1024)
-                    .option(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 32 * 1024)
+                    .option(ChannelOption.SO_KEEPALIVE, Boolean.TRUE)
+                    .option(ChannelOption.TCP_NODELAY, Boolean.TRUE)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO));
+                            ch.pipeline().addLast(new KryoDecoder(10 * 1024 * 1024));
+                            ch.pipeline().addLast(new KryoEncoder());
                             ch.pipeline().addLast(new HeartChannelHandler());
                         }
                     });
