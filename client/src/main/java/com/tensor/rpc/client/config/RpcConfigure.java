@@ -3,18 +3,15 @@ package com.tensor.rpc.client.config;
 /**
  * @author liaochuntao
  */
+
 public class RpcConfigure {
 
     public volatile static RpcConfigure RPC_CONFIGURE;
 
     private String serverAddr;
-    private String serviceName;
-    private String exposeIp;
-    private int exposePort;
     private volatile boolean start = true;
 
-    public RpcConfigure() {
-    }
+    private RpcConfigure() {}
 
     public String getServerAddr() {
         return serverAddr;
@@ -22,30 +19,6 @@ public class RpcConfigure {
 
     public void setServerAddr(String serverAddr) {
         this.serverAddr = serverAddr;
-    }
-
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public String getExposeIp() {
-        return exposeIp;
-    }
-
-    public void setExposeIp(String exposeIp) {
-        this.exposeIp = exposeIp;
-    }
-
-    public int getExposePort() {
-        return exposePort;
-    }
-
-    public void setExposePort(int exposePort) {
-        this.exposePort = exposePort;
     }
 
     public boolean isStart() {
@@ -56,11 +29,13 @@ public class RpcConfigure {
         this.start = start;
     }
 
-    public static void init(RpcConfigure configure) {
+    public static void init(RpcInit rpcInit) {
         if (RPC_CONFIGURE == null) {
             synchronized (RpcConfigure.class) {
                 if (RPC_CONFIGURE == null) {
-                    RPC_CONFIGURE = configure;
+                    RpcConfigure configure = new RpcConfigure();
+                    configure.serverAddr = rpcInit.serverAddr();
+
                 }
             }
         }
@@ -70,9 +45,6 @@ public class RpcConfigure {
     public String toString() {
         return "RpcConfigure{" +
                 "serverAddr='" + serverAddr + '\'' +
-                ", serviceName='" + serviceName + '\'' +
-                ", exposeIp='" + exposeIp + '\'' +
-                ", exposePort=" + exposePort +
                 '}';
     }
 }

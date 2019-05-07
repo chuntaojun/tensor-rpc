@@ -2,7 +2,6 @@ package com.tensor.rpc.common.call;
 
 
 import com.tensor.rpc.common.proxy.RpcMethodInterceptor;
-import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;

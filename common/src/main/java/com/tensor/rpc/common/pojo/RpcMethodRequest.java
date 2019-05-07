@@ -1,14 +1,19 @@
 package com.tensor.rpc.common.pojo;
 
-import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import java.util.Arrays;
 
 /**
  * @author liaochuntao
  */
+@Builder
+@AllArgsConstructor
 public class RpcMethodRequest {
 
     private String methodName;
-    private Map<Class, Object> param;
+    private Object[] param;
     private Class returnType;
     private Object returnValue;
     private Exception exception;
@@ -24,11 +29,11 @@ public class RpcMethodRequest {
         this.methodName = methodName;
     }
 
-    public Map<Class, Object> getParam() {
+    public Object[] getParam() {
         return param;
     }
 
-    public void setParam(Map<Class, Object> param) {
+    public void setParam(Object[] param) {
         this.param = param;
     }
 
@@ -54,5 +59,16 @@ public class RpcMethodRequest {
 
     public void setException(Exception exception) {
         this.exception = exception;
+    }
+
+    @Override
+    public String toString() {
+        return "RpcMethodRequest{" +
+                "methodName='" + methodName + '\'' +
+                ", param=" + Arrays.toString(param) +
+                ", returnType=" + returnType +
+                ", returnValue=" + returnValue +
+                ", exception=" + exception +
+                '}';
     }
 }

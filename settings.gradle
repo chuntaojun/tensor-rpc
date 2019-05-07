@@ -2,9 +2,9 @@ rootProject.name = 'tensor-rpc'
 include 'server'
 include 'client'
 include 'common'
+include 'test'
 
 rootProject.children.each {project ->
     project.buildFileName = "build.gradle"
 }
-include 'test'
 

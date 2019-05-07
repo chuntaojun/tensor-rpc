@@ -19,7 +19,7 @@ public class KryoDecoder extends LengthFieldBasedFrameDecoder {
         ByteBuf decode = (ByteBuf) super.decode(ctx, in);
         int byteLength = decode.readableBytes();
         byte[] byteHolder = new byte[byteLength];
-        decode.readBytes(byteHolder)
+        decode.readBytes(byteHolder);
         return KryoSerializer.deserialize(byteHolder);
     }
 

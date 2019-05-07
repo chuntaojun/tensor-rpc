@@ -8,7 +8,7 @@ import com.tensor.rpc.server.config.NettyServerConfigure;
 public class ServerApplication {
 
     public static void main(String[] args) {
-        NettyServerConfigure.bind(8080);
+        NettyServerConfigure.bind(8250);
     }
 
 }

@@ -22,7 +22,6 @@ public class HeartBeatChannelHandler extends SimpleChannelInboundHandler {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("msg is " + msg);
-        ctx.fireChannelRead(msg);
     }
 
     @Override
@@ -35,8 +34,8 @@ public class HeartBeatChannelHandler extends SimpleChannelInboundHandler {
             if (RPC_CONFIGURE.isStart()) {
                 RPC_CONFIGURE.setStart(false);
                 HeartInfo heartInfo = new HeartInfo();
-                heartInfo.setServerAddr(KeyBuilder.buildServiceKey(RPC_CONFIGURE.getServiceName(),
-                        RPC_CONFIGURE.getExposeIp(), RPC_CONFIGURE.getExposePort()));
+                String[] info = RPC_CONFIGURE.getServerAddr().split(":");
+                heartInfo.setServerAddr(KeyBuilder.buildServiceKey(info[0], Integer.valueOf(info[1])));
                 BeatTask task = new BeatTask(ctx, heartInfo);
                 RpcSchedule.HeartExecutor.submit(task);
             }
