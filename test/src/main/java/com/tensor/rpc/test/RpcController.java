@@ -17,12 +17,12 @@ public class RpcController {
     private MyRpcService myRpcServicel;
 
     @GetMapping
-    public void test() {
+    public String test() {
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = 0; i < 10; i ++) {
             list.add(i);
         }
-        myRpcServicel.print("hello", list);
+        return myRpcServicel.print("hello", list);
     }
 
 

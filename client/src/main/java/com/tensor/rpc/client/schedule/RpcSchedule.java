@@ -1,9 +1,6 @@
 package com.tensor.rpc.client.schedule;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author liaochuntao
@@ -13,7 +10,7 @@ public final class RpcSchedule {
     public static class HeartExecutor {
 
         private static ThreadFactory HeartBeatFactory = new ThreadFactory() {
-            private final String namePrefix = "Tensor-RPC-HEART_THREAD-";
+            private final String namePrefix = "Tensor-RPC-HEART-THREAD-";
 
             @Override
             public Thread newThread(Runnable r) {
@@ -26,6 +23,26 @@ public final class RpcSchedule {
 
         public static void submit(Runnable runnable) {
             HEART_BEAT.scheduleAtFixedRate(runnable, 30, 15, TimeUnit.SECONDS);
+        }
+
+    }
+
+    public static class RpcExecutor {
+
+        private static ThreadFactory RpcFactory = new ThreadFactory() {
+            private final String namePrefix = "Tensor-RPC-THREAD-";
+
+            @Override
+            public Thread newThread(Runnable r) {
+                String name = namePrefix;
+                return new Thread(r, name);
+            }
+        };
+
+        private static final ExecutorService RPC = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), RpcFactory);
+
+        public static void submit(Runnable runnable) {
+            RPC.submit(runnable);
         }
 
     }

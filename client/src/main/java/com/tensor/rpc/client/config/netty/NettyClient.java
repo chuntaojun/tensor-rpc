@@ -2,8 +2,8 @@ package com.tensor.rpc.client.config.netty;
 
 import com.tensor.rpc.client.rpc.RpcMethodHandler;
 import com.tensor.rpc.client.rpc.beat.HeartBeatChannelHandler;
-import com.tensor.rpc.common.serialize.KryoDecoder;
-import com.tensor.rpc.common.serialize.KryoEncoder;
+import com.tensor.rpc.common.serialize.kryo.KryoDecoder;
+import com.tensor.rpc.common.serialize.kryo.KryoEncoder;
 import com.tensor.rpc.common.util.KeyBuilder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;

@@ -9,6 +9,7 @@ import io.netty.channel.Channel;
 import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 /**
  * @author liaochuntao
@@ -32,16 +33,27 @@ public class RpcCGlibCallBackHandler extends RpcCallBackHandler {
         Channel channel = NettyClient.getConnection(serviceName, ip, port);
         channel.writeAndFlush(request);
         NettyClient.release(channel, serviceName, ip, port);
-        return null;
+        RpcResult future = RpcResultPool.createFuture(request.getReqId());
+        return future.result();
     }
 
     private RpcMethodRequest methodRequest(String className, Method method, Object[] args) {
+        String reqId = UUID.randomUUID().toString();
         String methodName = method.getName();
         Class<?> returnType = method.getReturnType();
         return RpcMethodRequest.builder()
+                .reqId(reqId)
                 .methodName(className + "." + methodName)
                 .param(args)
                 .returnType(returnType)
                 .build();
+    }
+
+    private class RpcReqTask implements Runnable {
+
+        @Override
+        public void run() {
+
+        }
     }
 }

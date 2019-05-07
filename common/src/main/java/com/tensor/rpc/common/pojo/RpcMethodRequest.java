@@ -12,6 +12,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 public class RpcMethodRequest {
 
+    private String reqId;
     private String methodName;
     private Object[] param;
     private Class returnType;
@@ -19,6 +20,14 @@ public class RpcMethodRequest {
     private Exception exception;
 
     public RpcMethodRequest() {
+    }
+
+    public String getReqId() {
+        return reqId;
+    }
+
+    public void setReqId(String reqId) {
+        this.reqId = reqId;
     }
 
     public String getMethodName() {

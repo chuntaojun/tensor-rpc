@@ -7,6 +7,6 @@ import java.util.ArrayList;
  */
 public interface MyRpcService {
 
-    void print(String s, ArrayList<Integer> b);
+    String print(String s, ArrayList<Integer> b);
 
 }

@@ -1,4 +1,4 @@
-package com.tensor.rpc.common.serialize;
+package com.tensor.rpc.common.serialize.kryo;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

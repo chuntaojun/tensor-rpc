@@ -1,7 +1,7 @@
 package com.tensor.rpc.server.config;
 
-import com.tensor.rpc.common.serialize.KryoDecoder;
-import com.tensor.rpc.common.serialize.KryoEncoder;
+import com.tensor.rpc.common.serialize.kryo.KryoDecoder;
+import com.tensor.rpc.common.serialize.kryo.KryoEncoder;
 import com.tensor.rpc.server.handler.HeartChannelHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -28,6 +28,7 @@ public class NettyServerConfigure {
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_KEEPALIVE, Boolean.TRUE)
                     .option(ChannelOption.TCP_NODELAY, Boolean.TRUE)
+                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
