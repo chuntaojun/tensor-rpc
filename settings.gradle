@@ -1,4 +1,4 @@
-rootProject.name = 'tensor-rpc'
+rootProject.name = 'tensor-handler'
 include 'server'
 include 'client'
 include 'common'

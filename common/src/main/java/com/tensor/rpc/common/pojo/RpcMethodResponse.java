@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class RpcMethodResponse {
 
     private String respId;
-    private Throwable error;
+    private Exception error;
     private Class<?> returnType;
     private String returnVal;
 
@@ -28,11 +28,11 @@ public class RpcMethodResponse {
         this.respId = respId;
     }
 
-    public Throwable getError() {
+    public Exception getError() {
         return error;
     }
 
-    public void setError(Throwable error) {
+    public void setError(Exception error) {
         this.error = error;
     }
 

@@ -1,13 +1,13 @@
 package com.tensor.rpc.test;
 
-import com.tensor.rpc.client.config.RpcInit;
+import com.tensor.rpc.client.rpc.EnableRpc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author liaochuntao
  */
-@RpcInit
+@EnableRpc(server = "127.0.0.1:8333", ip = "127.0.0.1", port = 8250)
 @SpringBootApplication
 public class RpcTestApplication {
 

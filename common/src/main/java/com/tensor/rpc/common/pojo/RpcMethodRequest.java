@@ -12,6 +12,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 public class RpcMethodRequest {
 
+    private String ownerName;
     private String reqId;
     private String methodName;
     private Object[] param;
@@ -20,6 +21,14 @@ public class RpcMethodRequest {
     private Exception exception;
 
     public RpcMethodRequest() {
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public String getReqId() {

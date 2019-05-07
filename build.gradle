@@ -2,7 +2,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
 
-    group 'com.tensor.rpc.org'
+    group 'com.tensor.handler.org'
     version '0.0.1'
 
     sourceCompatibility = 1.8
@@ -21,8 +21,8 @@ subprojects {
         compile group: 'cglib', name: 'cglib', version: '3.2.12'
         compile group: 'org.projectlombok', name: 'lombok', version: '1.18.6'
         annotationProcessor 'org.projectlombok:lombok:1.18.6'
-        implementation 'com.google.code.gson:gson:2.8.5'
         compile group: 'log4j', name: 'log4j', version: '1.2.17'
+        implementation 'com.google.code.gson:gson:2.8.5'
         implementation 'com.esotericsoftware:kryo:4.0.0'
     }
 }

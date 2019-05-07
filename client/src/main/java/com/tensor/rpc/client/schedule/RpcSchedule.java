@@ -1,11 +1,23 @@
 package com.tensor.rpc.client.schedule;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.*;
 
 /**
  * @author liaochuntao
  */
+@Slf4j
 public final class RpcSchedule {
+
+    private static final int MIN_POO_SIE = 2;
+    private static final int CORE_POOL_SIZE = 5;
+    private static final int MAX_POOL_SIZE = 20;
+    private static final long KEEP_ALIVE_TIME = 10;
+    private static final TimeUnit UNIT = TimeUnit.SECONDS;
+
+    private static RejectedExecutionHandler rejectedExecutionHandler =
+            (r, executor) -> log.error("{} Rpc 任务被拒绝。 {}", r.toString(), executor.toString());
 
     public static class HeartExecutor {
 
@@ -39,7 +51,8 @@ public final class RpcSchedule {
             }
         };
 
-        private static final ExecutorService RPC = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), RpcFactory);
+        public static final ThreadPoolExecutor RPC = new ThreadPoolExecutor(MIN_POO_SIE, MIN_POO_SIE, KEEP_ALIVE_TIME, UNIT,
+                new ArrayBlockingQueue<>(1000), RpcFactory, rejectedExecutionHandler);
 
         public static void submit(Runnable runnable) {
             RPC.submit(runnable);

@@ -2,7 +2,7 @@ package com.tensor.rpc.common.annotation;
 
 import java.lang.annotation.*;
 
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface RpcRegister {
@@ -11,7 +11,13 @@ public @interface RpcRegister {
      *
      * @return {@link String}
      */
-    String serverAddr() default "127.0.0.1:8007";
+    String ip();
+
+    /**
+     *
+     * @return
+     */
+    int port();
 
     /**
      *
