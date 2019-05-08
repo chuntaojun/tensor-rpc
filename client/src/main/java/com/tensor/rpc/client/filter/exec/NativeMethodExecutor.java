@@ -1,6 +1,9 @@
 package com.tensor.rpc.client.filter.exec;
 
+import com.tensor.rpc.client.cache.CachePool;
+import com.tensor.rpc.client.filter.MethodExecutor;
 import com.tensor.rpc.client.schedule.RpcSchedule;
+import com.tensor.rpc.common.annotation.RpcService;
 import com.tensor.rpc.common.pojo.RpcMethodRequest;
 import com.tensor.rpc.common.pojo.RpcMethodResponse;
 import com.tensor.rpc.common.serialize.gson.GsonSerializer;
@@ -19,18 +22,44 @@ import java.util.function.Function;
 /**
  * @author liaochuntao
  */
-public class NativeMethodExecutor {
+public class NativeMethodExecutor implements MethodExecutor {
 
     private static ConcurrentHashMap<String, RegisterInfo> methodExecutor = new ConcurrentHashMap<>();
 
-    public static void register(Object owner, Class<?> cls) {
-        Class[] interfaces = cls.getInterfaces();
-        for (Class inter : interfaces) {
-            methodExecutor.put(inter.getCanonicalName(), new RegisterInfo(owner, inter));
-        }
+    private MethodExecutor chain;
+
+    public NativeMethodExecutor() {
     }
 
-    public static void exec(RpcMethodRequest msg, Channel channel) {
+    @Override
+    public MethodExecutor initChain(MethodExecutor chain) {
+        this.chain = chain;
+        return chain;
+    }
+
+    @Override
+    public RpcResult exec(RpcService service, RpcMethodRequest request) throws InterruptedException {
+        if (isNative(request)) {
+            return exec(request);
+        }
+        return chain.exec(service, request);
+    }
+
+    protected RpcResult exec(RpcMethodRequest msg) {
+        RpcResult[] future = new RpcResult[1];
+        Mono.just(msg)
+                .map(request -> methodExecutor.get(request.getOwnerName()))
+                .publishOn(Schedulers.fromExecutor(RpcSchedule.RpcExecutor.RPC))
+                .map(Executor::new)
+                .map(f -> f.apply(msg))
+                .subscribe(rpcMethodResponse -> {
+                    future[0] = RpcResultPool.getFuture(rpcMethodResponse.getRespId());
+                    future[0].complete(rpcMethodResponse);
+                });
+        return future[0];
+    }
+
+    public void exec(RpcMethodRequest msg, Channel channel) {
         Mono.just(msg)
                 .map(request -> methodExecutor.get(request.getOwnerName()))
                 .publishOn(Schedulers.fromExecutor(RpcSchedule.RpcExecutor.RPC))
@@ -38,6 +67,13 @@ public class NativeMethodExecutor {
                 .map(f -> f.apply(msg))
                 .subscribe(response -> channel.writeAndFlush(response)
                         .addListener(future -> System.out.println(future.isSuccess())));
+    }
+
+    public static void register(Object owner, Class<?> cls) {
+        Class[] interfaces = cls.getInterfaces();
+        for (Class inter : interfaces) {
+            methodExecutor.put(inter.getCanonicalName(), new RegisterInfo(owner, inter));
+        }
     }
 
     private static class RegisterInfo {
@@ -92,5 +128,10 @@ public class NativeMethodExecutor {
                     .build();
             return response;
         }
+    }
+
+    protected static boolean isNative(RpcMethodRequest request) {
+        String key = request.getOwnerName();
+        return CachePool.containRegisterInfo(key);
     }
 }

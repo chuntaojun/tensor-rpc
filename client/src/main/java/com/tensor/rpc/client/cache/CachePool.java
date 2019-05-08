@@ -29,4 +29,8 @@ public class CachePool {
         return registerMap.get(key);
     }
 
+    public static boolean containRegisterInfo(String key) {
+        return registerMap.containsKey(key);
+    }
+
 }

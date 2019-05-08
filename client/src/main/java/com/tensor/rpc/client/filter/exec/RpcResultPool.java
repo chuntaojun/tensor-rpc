@@ -14,7 +14,11 @@ public class RpcResultPool {
     }
 
     public static RpcResult createFuture(String key) {
-        RpcResult result = new RpcResult();
+        return createFuture(key, false);
+    }
+
+    public static RpcResult createFuture(String key, boolean isVoid) {
+        RpcResult result = new RpcResult(isVoid);
         RESULT_FUTURE.put(key, result);
         return result;
     }

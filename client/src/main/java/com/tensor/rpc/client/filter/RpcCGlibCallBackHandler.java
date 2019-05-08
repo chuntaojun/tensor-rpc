@@ -1,7 +1,6 @@
 package com.tensor.rpc.client.filter;
 
 import com.tensor.rpc.client.cache.CachePool;
-import com.tensor.rpc.client.filter.exec.RpcMethodExecutor;
 import com.tensor.rpc.client.filter.exec.RpcResult;
 import com.tensor.rpc.common.annotation.RpcService;
 import com.tensor.rpc.common.call.RpcCallBackHandler;
@@ -11,6 +10,8 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
 import java.util.UUID;
+
+import static com.tensor.rpc.client.rpc.RpcConfigure.getMethodExecutor;
 
 /**
  * @author liaochuntao
@@ -27,7 +28,7 @@ public class RpcCGlibCallBackHandler extends RpcCallBackHandler {
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
         Class<?> cls = method.getDeclaringClass();
         RpcService rpcService = CachePool.getRpcService(cls.getCanonicalName());
-        RpcResult future = RpcMethodExecutor.exec(rpcService, methodRequest(cls.getCanonicalName(), method, args));
+        RpcResult future = getMethodExecutor().exec(rpcService, methodRequest(cls.getCanonicalName(), method, args));
         return future.result();
     }
 

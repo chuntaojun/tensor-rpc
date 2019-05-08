@@ -6,7 +6,7 @@ import com.tensor.rpc.common.util.KeyBuilder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-import static com.tensor.rpc.client.rpc.RpcConfigure.RPC_CONFIGURE;
+import static com.tensor.rpc.client.rpc.RpcConfigure.RPCCONFIGURE;
 
 
 /**
@@ -30,11 +30,11 @@ public class HeartBeatChannelHandler extends SimpleChannelInboundHandler<HeartIn
     }
 
     private void beat(ChannelHandlerContext ctx) {
-        if (RPC_CONFIGURE.isStart()) {
+        if (RPCCONFIGURE.isStart()) {
             synchronized (this) {
-                if (RPC_CONFIGURE.isStart()) {
-                    RPC_CONFIGURE.setStart(false);
-                    String[] info = RPC_CONFIGURE.getServerAddr().split(":");
+                if (RPCCONFIGURE.isStart()) {
+                    RPCCONFIGURE.setStart(false);
+                    String[] info = RPCCONFIGURE.getServerAddr().split(":");
 
                     HeartInfo heartInfo = new HeartInfo();
                     heartInfo.setServerAddr(KeyBuilder.buildServiceKey(info[0], Integer.valueOf(info[1])));

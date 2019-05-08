@@ -1,17 +1,28 @@
 package com.tensor.rpc.client.rpc;
 
+import com.tensor.rpc.client.filter.MethodExecutor;
+import com.tensor.rpc.client.filter.exec.BaseMethodExecutor;
+import com.tensor.rpc.client.filter.exec.NativeMethodExecutor;
+import com.tensor.rpc.client.filter.exec.RpcMethodExecutor;
+
 /**
  * @author liaochuntao
  */
 
 public class RpcConfigure {
 
-    public volatile static RpcConfigure RPC_CONFIGURE;
+    public volatile static RpcConfigure RPCCONFIGURE;
 
     private String serverAddr;
     private volatile boolean start = true;
+    private final MethodExecutor methodExecutor;
 
-    private RpcConfigure() {}
+    private RpcConfigure() {
+        methodExecutor = new BaseMethodExecutor();
+        MethodExecutor nativeMethodExecutor = new NativeMethodExecutor();
+        MethodExecutor rpcMethodExecutor = new RpcMethodExecutor();
+        methodExecutor.initChain(nativeMethodExecutor).initChain(rpcMethodExecutor);
+    }
 
     public String getServerAddr() {
         return serverAddr;
@@ -30,12 +41,12 @@ public class RpcConfigure {
     }
 
     public static void init(EnableRpc enableRpc) {
-        if (RPC_CONFIGURE == null) {
+        if (RPCCONFIGURE == null) {
             synchronized (RpcConfigure.class) {
-                if (RPC_CONFIGURE == null) {
+                if (RPCCONFIGURE == null) {
                     RpcConfigure configure = new RpcConfigure();
                     configure.serverAddr = enableRpc.ip() + ":" + enableRpc.port();
-                    RPC_CONFIGURE = configure;
+                    RPCCONFIGURE = configure;
                 }
             }
         }
@@ -46,5 +57,9 @@ public class RpcConfigure {
         return "RpcConfigure{" +
                 "serverAddr='" + serverAddr + '\'' +
                 '}';
+    }
+
+    public static MethodExecutor getMethodExecutor() {
+        return RPCCONFIGURE.methodExecutor;
     }
 }

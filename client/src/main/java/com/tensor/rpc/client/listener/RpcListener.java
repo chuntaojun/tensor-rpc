@@ -1,5 +1,6 @@
 package com.tensor.rpc.client.listener;
 
+import com.tensor.rpc.client.cache.CachePool;
 import com.tensor.rpc.client.filter.exec.NativeMethodExecutor;
 import com.tensor.rpc.client.handler.beat.BeatRecator;
 import com.tensor.rpc.client.rpc.EnableRpc;
@@ -36,7 +37,7 @@ public class RpcListener implements ApplicationListener<ApplicationContextEvent>
         }
 
         Map<String, Object> providers = context.getBeansWithAnnotation(RpcRegister.class);
-        Map<String, String> provoderInfos = providers.entrySet()
+        Map<String, String> providerInfos = providers.entrySet()
                 .stream()
                 .map(entry -> {
                     Object obj = entry.getValue();
@@ -44,6 +45,7 @@ public class RpcListener implements ApplicationListener<ApplicationContextEvent>
                     RpcRegister rpcRegister = (RpcRegister) cls.getAnnotation(RpcRegister.class);
                     String serviceName = rpcRegister.serviceName();
                     String key = KeyBuilder.buildServiceKey(serviceName, rpcRegister.ip(), rpcRegister.port());
+                    CachePool.register(cls.getCanonicalName(), rpcRegister);
                     NativeMethodExecutor.register(obj, cls);
                     return Tuples.of(key, cls.getCanonicalName());
                 })
@@ -52,7 +54,7 @@ public class RpcListener implements ApplicationListener<ApplicationContextEvent>
             throw new RuntimeException("[Tensor RPC] : must set server addr");
         }
 
-        BeatRecator.push(provoderInfos);
+        BeatRecator.push(providerInfos);
         NettyClient.conServer(serverAddr);
     }
 
