@@ -3,7 +3,7 @@ package com.tensor.rpc.client.filter;
 import com.tensor.rpc.client.cache.CachePool;
 import com.tensor.rpc.client.filter.exec.RpcResult;
 import com.tensor.rpc.common.annotation.RpcService;
-import com.tensor.rpc.common.call.RpcCallBackHandler;
+import com.tensor.rpc.common.call.AbstractRpcCallBackHandler;
 import com.tensor.rpc.common.pojo.RpcMethodRequest;
 import com.tensor.rpc.common.util.KeyBuilder;
 import net.sf.cglib.proxy.MethodProxy;
@@ -16,7 +16,7 @@ import static com.tensor.rpc.client.rpc.RpcConfigure.getMethodExecutor;
 /**
  * @author liaochuntao
  */
-public class RpcCGlibCallBackHandler extends RpcCallBackHandler {
+public class RpcCGlibCallBackHandler extends AbstractRpcCallBackHandler {
 
     private String serviceName;
 

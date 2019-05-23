@@ -9,4 +9,8 @@ public class RpcTimeOutException extends Exception {
     public RpcTimeOutException(String message) {
         super(message);
     }
+
+    public RpcTimeOutException(Throwable cause) {
+        super(cause);
+    }
 }

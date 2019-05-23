@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 /**
  * @author liaochuntao
  */
-public abstract class RpcCallBackHandler implements RpcMethodInterceptor {
+public abstract class AbstractRpcCallBackHandler implements RpcMethodInterceptor {
 
     @Override
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {

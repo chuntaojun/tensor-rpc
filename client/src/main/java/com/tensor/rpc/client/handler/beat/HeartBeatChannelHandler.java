@@ -38,7 +38,7 @@ public class HeartBeatChannelHandler extends SimpleChannelInboundHandler<HeartIn
 
                     HeartInfo heartInfo = new HeartInfo();
                     heartInfo.setServerAddr(KeyBuilder.buildServiceKey(info[0], Integer.valueOf(info[1])));
-                    heartInfo.setData(BeatRecator.poll());
+                    heartInfo.setData(BeatReactor.poll());
 
                     RpcSchedule.HeartExecutor.submit(new BeatTask(ctx, heartInfo));
                 }

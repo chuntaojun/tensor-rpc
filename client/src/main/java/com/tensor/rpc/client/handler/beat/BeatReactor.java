@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 /**
  * @author liaochuntao
  */
-public class BeatRecator {
+public class BeatReactor {
 
     private static ConcurrentLinkedDeque<Map<String, String>> SYNC_DATA = new ConcurrentLinkedDeque<>();
 

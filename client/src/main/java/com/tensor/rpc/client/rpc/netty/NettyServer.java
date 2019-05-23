@@ -1,6 +1,6 @@
 package com.tensor.rpc.client.rpc.netty;
 
-import com.tensor.rpc.client.handler.RpcMethodResponsetHandler;
+import com.tensor.rpc.client.handler.RpcMethodResponseHandler;
 import com.tensor.rpc.client.handler.beat.HeartBeatChannelHandler;
 import com.tensor.rpc.client.EnableRpc;
 import com.tensor.rpc.client.rpc.RpcConfigure;
@@ -50,7 +50,7 @@ public class NettyServer {
                             ch.pipeline().addLast(new KryoDecoder(10 * 1024 * 1024));
                             ch.pipeline().addLast(new KryoEncoder());
                             ch.pipeline().addLast(new HeartBeatChannelHandler());
-                            ch.pipeline().addLast(new RpcMethodResponsetHandler());
+                            ch.pipeline().addLast(new RpcMethodResponseHandler());
                         }
                     });
             ChannelFuture future = bootstrap.bind(port).sync();

@@ -2,8 +2,7 @@ package com.tensor.rpc.client.listener;
 
 import com.tensor.rpc.client.cache.CachePool;
 import com.tensor.rpc.client.cache.NaticeMethodPool;
-import com.tensor.rpc.client.filter.exec.NativeMethodExecutor;
-import com.tensor.rpc.client.handler.beat.BeatRecator;
+import com.tensor.rpc.client.handler.beat.BeatReactor;
 import com.tensor.rpc.client.EnableRpc;
 import com.tensor.rpc.client.rpc.netty.NettyClient;
 import com.tensor.rpc.client.rpc.netty.NettyServer;
@@ -22,7 +21,7 @@ import java.util.Map;
  * @author liaochuntao
  */
 @Component
-public class RpcListener implements ApplicationListener<ApplicationContextEvent> {
+public class RpcInitListener implements ApplicationListener<ApplicationContextEvent> {
 
     @Override
     public void onApplicationEvent(ApplicationContextEvent event) {
@@ -54,7 +53,7 @@ public class RpcListener implements ApplicationListener<ApplicationContextEvent>
             throw new RuntimeException("[Tensor RPC] : must set server addr");
         }
 
-        BeatRecator.push(providerInfos);
+        BeatReactor.push(providerInfos);
         NettyClient.conServer(serverAddr);
     }
 
