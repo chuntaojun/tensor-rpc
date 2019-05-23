@@ -12,6 +12,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,6 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author liaochuntao
  */
+@Slf4j
 public class NettyClient {
 
     private static final ConcurrentHashMap<String, ChannelPool> CHANNEL_POOL = new ConcurrentHashMap<>();
@@ -46,8 +48,8 @@ public class NettyClient {
             while (!pool1.isFull()) {
                 try {
                     pool1.push(open(port, host));
-                } catch (InterruptedException ignored) {
-                    ignored.printStackTrace();
+                } catch (InterruptedException e) {
+                    log.error("[Tensor-RPC ERROR] : {}", e.getMessage());
                 }
             }
             return pool1;

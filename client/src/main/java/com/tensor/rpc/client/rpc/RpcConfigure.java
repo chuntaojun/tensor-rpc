@@ -1,5 +1,6 @@
 package com.tensor.rpc.client.rpc;
 
+import com.tensor.rpc.client.EnableRpc;
 import com.tensor.rpc.client.filter.MethodExecutor;
 import com.tensor.rpc.client.filter.exec.BaseMethodExecutor;
 import com.tensor.rpc.client.filter.exec.NativeMethodExecutor;
@@ -19,9 +20,7 @@ public class RpcConfigure {
 
     private RpcConfigure() {
         methodExecutor = new BaseMethodExecutor();
-        MethodExecutor nativeMethodExecutor = new NativeMethodExecutor();
-        MethodExecutor rpcMethodExecutor = new RpcMethodExecutor();
-        methodExecutor.initChain(nativeMethodExecutor).initChain(rpcMethodExecutor);
+        methodExecutor.nextChain(new NativeMethodExecutor()).nextChain(new RpcMethodExecutor());
     }
 
     public String getServerAddr() {

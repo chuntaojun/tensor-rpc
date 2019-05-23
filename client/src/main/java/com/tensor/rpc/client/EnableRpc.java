@@ -1,13 +1,14 @@
-package com.tensor.rpc.client.rpc;
+package com.tensor.rpc.client;
 
-import com.tensor.rpc.client.Main;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import java.lang.annotation.*;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({Main.class})
+@Configuration
+@ComponentScan
 @Inherited
 public @interface EnableRpc {
 

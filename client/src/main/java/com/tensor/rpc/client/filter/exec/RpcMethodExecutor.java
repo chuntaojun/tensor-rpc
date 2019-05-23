@@ -26,7 +26,12 @@ public class RpcMethodExecutor implements MethodExecutor {
     }
 
     @Override
-    public MethodExecutor initChain(MethodExecutor chain) {
+    public RpcResult exec(Channel channel, RpcMethodRequest request) throws InterruptedException {
+        throw new RuntimeException("应该由本地方法执行");
+    }
+
+    @Override
+    public MethodExecutor nextChain(MethodExecutor chain) {
         return chain;
     }
 

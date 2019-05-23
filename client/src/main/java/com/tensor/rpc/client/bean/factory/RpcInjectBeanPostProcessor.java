@@ -27,6 +27,12 @@ public class RpcInjectBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
+    /**
+     * 接口进行代理，对接口的所有操作转为 RPC 远程调用操作
+     *
+     * @param cls {@link Class} interface type
+     * @param bean {@link Object} Spring's bean
+     */
     private void rpcServiceInject(Class cls, Object bean) {
         Field[] fields = cls.getDeclaredFields();
         for (Field field : fields) {

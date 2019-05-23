@@ -1,9 +1,10 @@
 package com.tensor.rpc.client.listener;
 
 import com.tensor.rpc.client.cache.CachePool;
+import com.tensor.rpc.client.cache.NaticeMethodPool;
 import com.tensor.rpc.client.filter.exec.NativeMethodExecutor;
 import com.tensor.rpc.client.handler.beat.BeatRecator;
-import com.tensor.rpc.client.rpc.EnableRpc;
+import com.tensor.rpc.client.EnableRpc;
 import com.tensor.rpc.client.rpc.netty.NettyClient;
 import com.tensor.rpc.client.rpc.netty.NettyServer;
 import com.tensor.rpc.common.annotation.RpcRegister;
@@ -37,16 +38,15 @@ public class RpcListener implements ApplicationListener<ApplicationContextEvent>
         }
 
         Map<String, Object> providers = context.getBeansWithAnnotation(RpcRegister.class);
-        Map<String, String> providerInfos = providers.entrySet()
+        Map<String, String> providerInfos = providers.values()
                 .stream()
-                .map(entry -> {
-                    Object obj = entry.getValue();
+                .map(obj -> {
                     Class cls = obj.getClass();
                     RpcRegister rpcRegister = (RpcRegister) cls.getAnnotation(RpcRegister.class);
                     String serviceName = rpcRegister.serviceName();
                     String key = KeyBuilder.buildServiceKey(serviceName, rpcRegister.ip(), rpcRegister.port());
                     CachePool.register(cls.getCanonicalName(), rpcRegister);
-                    NativeMethodExecutor.register(obj, cls);
+                    NaticeMethodPool.register(obj, cls);
                     return Tuples.of(key, cls.getCanonicalName());
                 })
                 .collect(HashMap::new, (m, v) -> m.put(v.getT1(), v.getT2()), HashMap::putAll);

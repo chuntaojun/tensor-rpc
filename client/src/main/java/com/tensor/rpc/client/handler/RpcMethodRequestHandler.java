@@ -12,7 +12,6 @@ public class RpcMethodRequestHandler extends SimpleChannelInboundHandler<RpcMeth
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcMethodResponse msg) throws Exception {
-        System.out.println("msg is " + msg);
         RpcResultPool.getFuture(msg.getRespId()).complete(msg);
     }
 

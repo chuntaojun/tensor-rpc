@@ -2,7 +2,7 @@ package com.tensor.rpc.client.rpc.netty;
 
 import com.tensor.rpc.client.handler.RpcMethodResponsetHandler;
 import com.tensor.rpc.client.handler.beat.HeartBeatChannelHandler;
-import com.tensor.rpc.client.rpc.EnableRpc;
+import com.tensor.rpc.client.EnableRpc;
 import com.tensor.rpc.client.rpc.RpcConfigure;
 import com.tensor.rpc.common.serialize.kryo.KryoDecoder;
 import com.tensor.rpc.common.serialize.kryo.KryoEncoder;

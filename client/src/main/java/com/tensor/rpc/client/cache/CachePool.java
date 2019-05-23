@@ -10,27 +10,28 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CachePool {
 
-    private static final ConcurrentHashMap<String, RpcService> serviceMap = new ConcurrentHashMap<>();
-    private static final ConcurrentHashMap<String, RpcRegister> registerMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, RpcService> SERVICE_MAP = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, RpcRegister> REGISTER_MAP = new ConcurrentHashMap<>();
 
+    // TODO 唯一性判断
     public static void register(String key, RpcService value) {
-        serviceMap.put(key, value);
+        SERVICE_MAP.put(key, value);
     }
 
     public static void register(String key, RpcRegister value) {
-        registerMap.put(key, value);
+        REGISTER_MAP.put(key, value);
     }
 
     public static RpcService getRpcService(String key) {
-        return serviceMap.get(key);
+        return SERVICE_MAP.get(key);
     }
 
     public static RpcRegister getRpcRegister(String key) {
-        return registerMap.get(key);
+        return REGISTER_MAP.get(key);
     }
 
     public static boolean containRegisterInfo(String key) {
-        return registerMap.containsKey(key);
+        return REGISTER_MAP.containsKey(key);
     }
 
 }
