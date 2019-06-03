@@ -2,7 +2,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
 
-    group 'com.tensor.rpc.org'
+    group 'com.tensor.config.org'
     version '0.0.1'
 
     sourceCompatibility = 1.8
