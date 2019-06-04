@@ -1,6 +1,6 @@
 package com.tensor.rpc.test;
 
-import com.tensor.rpc.client.EnableTensorRPC;
+import com.tensor.rpc.core.EnableTensorRPC;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

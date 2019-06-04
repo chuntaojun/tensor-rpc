@@ -1,6 +1,5 @@
-rootProject.name = 'tensor-config'
-include 'server'
-include 'client'
+rootProject.name = 'tensor-rpc'
+include 'core'
 include 'common'
 include 'test'
 

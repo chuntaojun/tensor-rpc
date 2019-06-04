@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
  * @author liaochuntao
  */
 @Service
-@RpcRegister(ip = "127.0.0.1", port = 8888, serviceName = "MyRpcRegister")
+@RpcRegister(ip = "127.0.0.1", port = 8888, serviceName = "MyRpcRegister", value = MyRpcRegister.class)
 public class MyRpcRegisterImpl implements MyRpcRegister {
 
     @Override
     public String print(String s) {
-        return "MyRpcRegisterImpl";
+        return "MyRpcRegisterImpl " + s;
     }
 }

@@ -25,4 +25,10 @@ public @interface RpcRegister {
      */
     String serviceName();
 
+    /**
+     *
+     * @return
+     */
+    Class<?> value();
+
 }

@@ -1,4 +1,4 @@
-import com.tensor.rpc.client.bean.factory.RpcServiceInjectBeanPostProcessor;
+import com.tensor.rpc.core.bean.factory.RpcServiceInjectBeanPostProcessor;
 import org.junit.Test;
 
 public class MyTest {
