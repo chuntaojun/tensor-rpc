@@ -7,9 +7,10 @@ package com.tensor.rpc.core.handler;
 public interface FilterChain {
 
     /**
+     * RPC 进入 MethodExecutor 之前的 {@link FilterChain}
      *
-     * @param exchange
-     * @return
+     * @param exchange {@link RpcExchange}
+     * @return {@link Void}
      */
     void filter(RpcExchange exchange);
 

@@ -23,11 +23,10 @@ public class BaseMethodExecutor implements MethodExecutor {
     @Override
     public RpcResult invoke(Invoker invoker, MethodExecutorChain chain) throws InterruptedException {
         invoker.start();
-        RpcExchange exchange = new RpcExchange(invoker.getRequest());
+        RpcExchange exchange = new RpcExchange(invoker.getRequest(), invoker.getChannel());
         filter.filter(exchange, filter.getChain());
-        RpcResult rpcResult = this.chain.chain(invoker);
         invoker.end();
-        return rpcResult;
+        return this.chain.chain(invoker);
     }
 
     @Override

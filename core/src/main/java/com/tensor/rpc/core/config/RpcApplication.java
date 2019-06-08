@@ -4,19 +4,24 @@ import com.tensor.rpc.core.EnableTensorRPC;
 import com.tensor.rpc.core.proxy.MethodExecutor;
 import com.tensor.rpc.core.handler.BaseMethodExecutor;
 
+import java.util.Map;
+
 /**
  * @author liaochuntao
  */
 
-public class RpcConfigure {
+public class RpcApplication {
 
-    public volatile static RpcConfigure RPCCONFIGURE;
+    public volatile static RpcApplication RPCCONFIGURE;
 
     private String serverAddr;
+    private String ip;
+    private int port;
+    private Map<Object, Object> metadata;
     private volatile boolean start = true;
     private final MethodExecutor methodExecutor;
 
-    private RpcConfigure() {
+    private RpcApplication() {
         methodExecutor = new BaseMethodExecutor();
     }
 
@@ -36,21 +41,35 @@ public class RpcConfigure {
         this.start = start;
     }
 
-    public static void init(EnableTensorRPC enableTensorRPC) {
+    public static void init(EnableTensorRPC tensorRPC) {
         if (RPCCONFIGURE == null) {
-            synchronized (RpcConfigure.class) {
+            synchronized (RpcApplication.class) {
                 if (RPCCONFIGURE == null) {
-                    RpcConfigure configure = new RpcConfigure();
-                    configure.serverAddr = enableTensorRPC.ip() + ":" + enableTensorRPC.port();
+                    RpcApplication configure = new RpcApplication();
+                    configure.ip = tensorRPC.ip();
+                    configure.port = tensorRPC.port();
+                    configure.serverAddr = tensorRPC.ip() + ":" + tensorRPC.port();
                     RPCCONFIGURE = configure;
                 }
             }
         }
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public Map<Object, Object> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
-        return "RpcConfigure{" +
+        return "RpcApplication{" +
                 "serverAddr='" + serverAddr + '\'' +
                 '}';
     }

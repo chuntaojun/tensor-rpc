@@ -1,6 +1,6 @@
 package com.tensor.rpc.core.handler;
 
-import com.tensor.rpc.core.cache.NativeMethodManager;
+import com.tensor.rpc.core.config.ApplicationManager;
 import com.tensor.rpc.core.proxy.MethodExecutor;
 import com.tensor.rpc.core.schedule.RpcSchedule;
 import com.tensor.rpc.common.pojo.RpcMethodRequest;
@@ -23,13 +23,15 @@ public class NativeMethodExecutor implements MethodExecutor {
     private RpcResult innerExec(RpcMethodRequest msg) {
         RpcResult[] future = new RpcResult[1];
         Mono.just(msg)
-                .map(request -> NativeMethodManager.getExecutor(request.getOwnerName()))
+                .map(request -> ApplicationManager.getNativeMethodManager().getExecutor(request.getOwnerName()))
                 .map(executor -> {
                     future[0] = RpcResultPool.createFuture(msg.getReqId());
                     return executor;
                 })
+                .publishOn(Schedulers.fromExecutor(RpcSchedule.RpcExecutor.RPC))
                 .map(f -> f.apply(msg))
                 .subscribe(rpcMethodResponse -> future[0].complete(rpcMethodResponse));
+        Thread.currentThread().interrupt();
         return future[0];
     }
 

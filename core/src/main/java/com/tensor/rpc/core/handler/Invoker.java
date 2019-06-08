@@ -1,8 +1,8 @@
 package com.tensor.rpc.core.handler;
 
-import com.tensor.rpc.core.cache.NativeMethodManager;
 import com.tensor.rpc.common.annotation.RpcService;
 import com.tensor.rpc.common.pojo.RpcMethodRequest;
+import com.tensor.rpc.core.config.ApplicationManager;
 import io.netty.channel.Channel;
 
 
@@ -54,7 +54,7 @@ public class Invoker {
     }
 
     boolean isNative() {
-        return NativeMethodManager.isNative(request);
+        return ApplicationManager.getNativeMethodManager().isNative(request);
     }
 
 }

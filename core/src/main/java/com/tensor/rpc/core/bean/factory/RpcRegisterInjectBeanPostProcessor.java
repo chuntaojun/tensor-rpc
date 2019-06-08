@@ -1,9 +1,8 @@
 package com.tensor.rpc.core.bean.factory;
 
-import com.tensor.rpc.core.cache.RpcInfoManager;
-import com.tensor.rpc.core.cache.NativeMethodManager;
 import com.tensor.rpc.common.annotation.RpcRegister;
 import com.tensor.rpc.common.util.KeyBuilder;
+import com.tensor.rpc.core.config.ApplicationManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -35,8 +34,8 @@ public class RpcRegisterInjectBeanPostProcessor implements BeanPostProcessor {
             Class<?> registerType = rpcRegister.value();
 
             String key = KeyBuilder.buildServiceKey(serviceName, rpcRegister.ip(), rpcRegister.port());
-            RpcInfoManager.providerRegister(registerType.getCanonicalName(), rpcRegister);
-            NativeMethodManager.register(bean, cls);
+            ApplicationManager.getRpcInfoManager().providerRegister(registerType.getCanonicalName(), rpcRegister);
+            ApplicationManager.getNativeMethodManager().register(bean, cls);
         }
         return bean;
     }

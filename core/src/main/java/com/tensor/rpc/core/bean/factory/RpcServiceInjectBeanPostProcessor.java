@@ -1,6 +1,6 @@
 package com.tensor.rpc.core.bean.factory;
 
-import com.tensor.rpc.core.cache.RpcInfoManager;
+import com.tensor.rpc.core.config.ApplicationManager;
 import com.tensor.rpc.core.proxy.RpcInjectProxy;
 import com.tensor.rpc.common.annotation.RpcService;
 import org.springframework.beans.BeansException;
@@ -39,7 +39,7 @@ public class RpcServiceInjectBeanPostProcessor implements BeanPostProcessor {
                 RpcService rpcService = field.getAnnotation(RpcService.class);
                 try {
                     field.set(bean, RpcInjectProxy.inject(rpcService, field.getType()));
-                    RpcInfoManager.consumerRegister(field.getType().getCanonicalName(), rpcService);
+                    ApplicationManager.getRpcInfoManager().consumerRegister(field.getType().getCanonicalName(), rpcService);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

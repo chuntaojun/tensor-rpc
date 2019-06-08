@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * @author liaochuntao
- */
+ */@Deprecated
 public class HeartInfo {
 
     private long lastSendTime = System.currentTimeMillis();

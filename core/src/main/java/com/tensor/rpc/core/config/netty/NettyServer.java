@@ -2,7 +2,7 @@ package com.tensor.rpc.core.config.netty;
 
 import com.tensor.rpc.core.handler.RpcMethodResponseHandler;
 import com.tensor.rpc.core.EnableTensorRPC;
-import com.tensor.rpc.core.config.RpcConfigure;
+import com.tensor.rpc.core.config.RpcApplication;
 import com.tensor.rpc.common.serialize.kryo.KryoDecoder;
 import com.tensor.rpc.common.serialize.kryo.KryoEncoder;
 import io.netty.bootstrap.ServerBootstrap;
@@ -28,7 +28,7 @@ public class NettyServer {
 
     public static void start(EnableTensorRPC enableTensorRPC) {
         int port = enableTensorRPC.port();
-        RpcConfigure.init(enableTensorRPC);
+        RpcApplication.init(enableTensorRPC);
         service.submit(new Server(port));
     }
 
