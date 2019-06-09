@@ -1,8 +1,4 @@
-package com.tensor.rpc.core.proxy;
-
-import com.tensor.rpc.core.handler.MethodExecutorChain;
-import com.tensor.rpc.core.handler.Invoker;
-import com.tensor.rpc.core.handler.RpcResult;
+package com.tensor.rpc.core.handler;
 
 /**
  * @author liaochuntao
@@ -10,9 +6,12 @@ import com.tensor.rpc.core.handler.RpcResult;
 public interface MethodExecutor {
 
     /**
+     * RPC 方法调用
      *
-     * @param invoker
-     * @return
+     * @param invoker {@link Invoker}
+     * @param chain {@link MethodExecutorChain}
+     * @return {@link RpcResult}
+     * @throws InterruptedException
      */
     RpcResult invoke(Invoker invoker, MethodExecutorChain chain) throws InterruptedException;
 

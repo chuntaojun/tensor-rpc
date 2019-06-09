@@ -3,11 +3,11 @@ package com.tensor.rpc.core.handler;
 import com.tensor.rpc.common.annotation.RpcService;
 import com.tensor.rpc.common.constants.ConstantsAttribute;
 import com.tensor.rpc.common.pojo.RpcMethodRequest;
-import com.tensor.rpc.core.handler.filter.DefaultFilterChain;
 import io.netty.channel.Channel;
 
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ServiceLoader;
 
 /**
@@ -18,22 +18,19 @@ import java.util.ServiceLoader;
  */
 public class MethodInvoker {
 
-    private FilterChain chain;
+    private FilterChain filterChain;
+    private MethodExecutorChain executorChain;
 
     public MethodInvoker() {
-        ServiceLoader<Filter> tmp = ServiceLoader.load(Filter.class);
-        LinkedList<Filter> filters = new LinkedList<>();
-        for (Filter filter : tmp) {
-            filters.add(filter);
-        }
-        filters.sort(Comparator.comparingInt(Filter::priority));
-        this.chain = initFilterChain(filters, new BaseMethodExecutor());
+
+        initMethodExecutorChain();
+        initFilterChain();
     }
 
     public RpcResult invoke(RpcMethodRequest request, RpcService service) {
         RpcExchange exchange = new RpcExchange(service, request);
         try {
-            chain.filter(exchange);
+            filterChain.filter(exchange);
             return (RpcResult) exchange.getAttribute(ConstantsAttribute.RESULT_FUTURE_ATTRIBUTE);
         } catch (InterruptedException e) {
             throw new RuntimeException(e.getMessage());
@@ -44,30 +41,57 @@ public class MethodInvoker {
         RpcExchange exchange = new RpcExchange(service, request);
         try {
             exchange.addAttribute(ConstantsAttribute.CHANNEL_ATTRIBUTE, channel);
-            chain.filter(exchange);
+            filterChain.filter(exchange);
             return (RpcResult) exchange.getAttribute(ConstantsAttribute.RESULT_FUTURE_ATTRIBUTE);
         } catch (InterruptedException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    private FilterChain initFilterChain(LinkedList<Filter> filters, BaseMethodExecutor executor) {
-        DefaultFilterChain chain = new DefaultFilterChain(null);
+    private void initMethodExecutorChain() {
+        ServiceLoader<MethodExecutor> serviceLoaders = ServiceLoader.load(MethodExecutor.class);
+        List<MethodExecutor> executors = new LinkedList<>();
+
+        for (MethodExecutor executor : serviceLoaders) {
+            executors.add(executor);
+        }
+
+        executors.sort(Comparator.comparingInt(MethodExecutor::priority));
+
+        DefaultMethodExecutorChain defaultMethodExecutorChain = new DefaultMethodExecutorChain(null);
+        DefaultMethodExecutorChain currentChain = defaultMethodExecutorChain;
+        for (MethodExecutor executor : executors) {
+            DefaultMethodExecutorChain d = new DefaultMethodExecutorChain(executor);
+            currentChain.setNext(d);
+            currentChain = d;
+        }
+        this.executorChain = defaultMethodExecutorChain.getNext();
+    }
+
+    private void initFilterChain() {
+        ServiceLoader<Filter> tmp = ServiceLoader.load(Filter.class);
+        LinkedList<Filter> filters = new LinkedList<>();
+        for (Filter filter : tmp) {
+            filters.add(filter);
+        }
+        filters.sort(Comparator.comparingInt(Filter::priority));
+        DefaultFilterChain filterChain = new DefaultFilterChain(null);
 
         if (filters.isEmpty()) {
-            chain.setExecutorChain(executor.getChain());
-            return chain;
+            filterChain.setExecutorChain(executorChain);
+            this.filterChain =  filterChain;
+            return;
         }
 
-        DefaultFilterChain currentChain = chain;
+        DefaultFilterChain currentChain = filterChain;
         for (Filter filter : filters) {
-            DefaultFilterChain filterChain = new DefaultFilterChain(filter);
-            currentChain.setNext(filterChain);
-            currentChain.setExecutorChain(executor.getChain());
-            currentChain = filterChain;
+            DefaultFilterChain chain = new DefaultFilterChain(filter);
+            currentChain.setNext(chain);
+            currentChain.setExecutorChain(executorChain);
+            currentChain = chain;
         }
 
-        return currentChain.getNext();
+        this.filterChain = currentChain.getNext();
     }
 
 }

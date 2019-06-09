@@ -17,7 +17,7 @@ dependencies {
 
     implementation project(":common")
     implementation project(":core")
-    implementation project(":api")
+    implementation project(":example:api")
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompile group: 'junit', name: 'junit', version: '4.12'

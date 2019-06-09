@@ -1,4 +1,4 @@
-package com.tensor.rpc.core.handler.filter;
+package com.tensor.rpc.core.handler;
 
 import com.tensor.rpc.common.annotation.RpcService;
 import com.tensor.rpc.common.constants.ConstantsAttribute;

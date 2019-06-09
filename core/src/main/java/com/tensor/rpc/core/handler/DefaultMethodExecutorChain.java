@@ -1,7 +1,5 @@
 package com.tensor.rpc.core.handler;
 
-import com.tensor.rpc.core.proxy.MethodExecutor;
-
 /**
  * @author <a href="mailto:liaochunyhm@live.com">liaochuntao</a>
  * @since

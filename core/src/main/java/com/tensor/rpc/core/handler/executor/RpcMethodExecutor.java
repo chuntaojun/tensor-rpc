@@ -1,6 +1,10 @@
-package com.tensor.rpc.core.handler;
+package com.tensor.rpc.core.handler.executor;
 
-import com.tensor.rpc.core.proxy.MethodExecutor;
+import com.tensor.rpc.core.handler.Invoker;
+import com.tensor.rpc.core.handler.MethodExecutorChain;
+import com.tensor.rpc.core.handler.RpcResult;
+import com.tensor.rpc.core.handler.RpcResultPool;
+import com.tensor.rpc.core.handler.MethodExecutor;
 import com.tensor.rpc.core.config.netty.NettyClient;
 import com.tensor.rpc.core.schedule.RpcSchedule;
 import com.tensor.rpc.common.annotation.RpcService;
@@ -15,6 +19,9 @@ import reactor.core.scheduler.Schedulers;
  */
 @Slf4j
 public class RpcMethodExecutor implements MethodExecutor {
+
+    public RpcMethodExecutor() {
+    }
 
     @Override
     public RpcResult invoke(Invoker invoker, MethodExecutorChain chain) throws InterruptedException {
@@ -38,7 +45,7 @@ public class RpcMethodExecutor implements MethodExecutor {
 
     @Override
     public int priority() {
-        return 2;
+        return -1;
     }
 
     /**

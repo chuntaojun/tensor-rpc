@@ -1,0 +1,3 @@
+com.tensor.rpc.core.handler.executor.BaseMethodExecutor
+com.tensor.rpc.core.handler.executor.NativeMethodExecutor
+com.tensor.rpc.core.handler.executor.RpcMethodExecutor

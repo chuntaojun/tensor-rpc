@@ -15,8 +15,6 @@ public class Invoker {
     private final RpcMethodRequest request;
     private final Channel channel;
     private RpcService service;
-    private long startTime;
-    private long endTime;
 
     public Invoker(RpcMethodRequest request, Channel channel) {
         this.request = request;
@@ -33,11 +31,11 @@ public class Invoker {
         return request;
     }
 
-    Channel getChannel() {
+    public Channel getChannel() {
         return channel;
     }
 
-    RpcService getService() {
+    public RpcService getService() {
         return service;
     }
 
@@ -45,19 +43,11 @@ public class Invoker {
         this.service = service;
     }
 
-    void start() {
-        this.startTime = System.currentTimeMillis();
-    }
-
-    void end() {
-        this.endTime = System.currentTimeMillis();
-    }
-
-    boolean isNative() {
+    public boolean isNative() {
         return ApplicationManager.getNativeMethodManager().isNative(request) && channel == null;
     }
 
-    boolean isRpcRequest() {
+    public boolean isRpcRequest() {
         return channel != null;
     }
 

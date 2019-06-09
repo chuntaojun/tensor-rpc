@@ -28,7 +28,6 @@ public class NettyServer {
 
     public static void start(EnableTensorRPC enableTensorRPC) {
         int port = enableTensorRPC.port();
-        RpcApplication.init(enableTensorRPC);
         service.submit(new Server(port));
     }
 

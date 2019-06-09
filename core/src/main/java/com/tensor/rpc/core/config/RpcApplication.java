@@ -40,14 +40,14 @@ public class RpcApplication {
         this.start = start;
     }
 
-    public static void init(EnableTensorRPC tensorRPC) {
+    public static void init(EnableTensorRPC rpc) {
         if (RPCCONFIGURE == null) {
             synchronized (RpcApplication.class) {
                 if (RPCCONFIGURE == null) {
                     RpcApplication configure = new RpcApplication();
-                    configure.ip = tensorRPC.ip();
-                    configure.port = tensorRPC.port();
-                    configure.serverAddr = tensorRPC.ip() + ":" + tensorRPC.port();
+                    configure.ip = rpc.ip();
+                    configure.port = rpc.port();
+                    configure.serverAddr = rpc.ip() + ":" + rpc.port();
                     RPCCONFIGURE = configure;
                 }
             }
