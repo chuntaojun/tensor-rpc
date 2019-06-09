@@ -30,11 +30,7 @@ public class RpcResult extends CompletableFuture<RpcMethodResponse> {
             return null;
         }
         RpcMethodResponse response = null;
-        try {
-            response = get(1000, TimeUnit.MILLISECONDS);
-        } catch (TimeoutException e) {
-            throw new RpcTimeOutException(e);
-        }
+        response = get();
         RpcResultPool.remove(response.getRespId());
         Class cls = response.getReturnType();
         String val = response.getReturnVal();

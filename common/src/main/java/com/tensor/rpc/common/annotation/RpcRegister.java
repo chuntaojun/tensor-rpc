@@ -11,19 +11,19 @@ public @interface RpcRegister {
      *
      * @return {@link String}
      */
-    String ip();
+    String ip() default "127.0.0.1";
 
     /**
      *
      * @return
      */
-    int port();
+    int port() default 8080;
 
     /**
      *
      * @return {@link String}
      */
-    String serviceName();
+    String serviceName() default "tensor-rpc";
 
     /**
      *

@@ -13,29 +13,9 @@ import java.util.ServiceLoader;
  */
 public class BaseMethodExecutor implements MethodExecutor {
 
-    private MethodExecutorChain chain;
-    private DefaultMethodFilter filter = new DefaultMethodFilter();
+    private final MethodExecutorChain chain;
 
     public BaseMethodExecutor() {
-        init();
-    }
-
-    @Override
-    public RpcResult invoke(Invoker invoker, MethodExecutorChain chain) throws InterruptedException {
-        invoker.start();
-        RpcExchange exchange = new RpcExchange(invoker.getRequest(), invoker.getChannel());
-        filter.filter(exchange, filter.getChain());
-        invoker.end();
-        return this.chain.chain(invoker);
-    }
-
-    @Override
-    public int priority() {
-        return 0;
-    }
-
-    private void init() {
-
         ServiceLoader<MethodExecutor> serviceLoaders = ServiceLoader.load(MethodExecutor.class);
         List<MethodExecutor> executors = new LinkedList<>();
 
@@ -58,6 +38,20 @@ public class BaseMethodExecutor implements MethodExecutor {
             currentChain = d;
         }
         this.chain = defaultMethodExecutorChain.getNext();
+    }
+
+    @Override
+    public RpcResult invoke(Invoker invoker, MethodExecutorChain chain) throws InterruptedException {
+        return this.chain.chain(invoker);
+    }
+
+    @Override
+    public int priority() {
+        return 0;
+    }
+
+    public MethodExecutorChain getChain() {
+        return chain;
     }
 
 }

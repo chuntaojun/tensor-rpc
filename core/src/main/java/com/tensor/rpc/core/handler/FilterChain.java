@@ -12,6 +12,6 @@ public interface FilterChain {
      * @param exchange {@link RpcExchange}
      * @return {@link Void}
      */
-    void filter(RpcExchange exchange);
+    void filter(RpcExchange exchange) throws InterruptedException;
 
 }

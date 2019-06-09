@@ -1,7 +1,7 @@
 package com.tensor.rpc.core.handler;
 
+import com.tensor.rpc.common.annotation.RpcService;
 import com.tensor.rpc.common.pojo.RpcMethodRequest;
-import io.netty.channel.Channel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,21 +12,25 @@ import java.util.Map;
  */
 public class RpcExchange {
 
+    private final RpcService rpcService;
     private final RpcMethodRequest request;
-    private final Channel channel;
     private final Map<Object, Object> attachment = new HashMap<>();
 
-    public RpcExchange(RpcMethodRequest request, Channel channel) {
+    public RpcExchange(RpcService service, RpcMethodRequest request) {
+        this.rpcService = service;
         this.request = request;
-        this.channel = channel;
+    }
+
+    public RpcService getRpcService() {
+        return rpcService;
     }
 
     public RpcMethodRequest getRequest() {
         return request;
     }
 
-    public Channel getChannel() {
-        return channel;
+    public Object getAttribute(Object key) {
+        return attachment.get(key);
     }
 
     public void addAttribute(Object key, Object val) {

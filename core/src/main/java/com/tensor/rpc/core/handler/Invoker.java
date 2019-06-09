@@ -54,7 +54,11 @@ public class Invoker {
     }
 
     boolean isNative() {
-        return ApplicationManager.getNativeMethodManager().isNative(request);
+        return ApplicationManager.getNativeMethodManager().isNative(request) && channel == null;
+    }
+
+    boolean isRpcRequest() {
+        return channel != null;
     }
 
 }

@@ -1,8 +1,7 @@
 package com.tensor.rpc.core.config;
 
 import com.tensor.rpc.core.EnableTensorRPC;
-import com.tensor.rpc.core.proxy.MethodExecutor;
-import com.tensor.rpc.core.handler.BaseMethodExecutor;
+import com.tensor.rpc.core.handler.MethodInvoker;
 
 import java.util.Map;
 
@@ -19,10 +18,10 @@ public class RpcApplication {
     private int port;
     private Map<Object, Object> metadata;
     private volatile boolean start = true;
-    private final MethodExecutor methodExecutor;
+    private final MethodInvoker methodInvoker;
 
     private RpcApplication() {
-        methodExecutor = new BaseMethodExecutor();
+        methodInvoker = new MethodInvoker();
     }
 
     public String getServerAddr() {
@@ -74,7 +73,7 @@ public class RpcApplication {
                 '}';
     }
 
-    public static MethodExecutor getMethodExecutor() {
-        return RPCCONFIGURE.methodExecutor;
+    public static MethodInvoker getMethodInvoker() {
+        return RPCCONFIGURE.methodInvoker;
     }
 }

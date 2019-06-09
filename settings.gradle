@@ -6,4 +6,11 @@ include 'test'
 rootProject.children.each {project ->
     project.buildFileName = "build.gradle"
 }
+include 'example'
+include 'example:consumer'
+findProject(':example:consumer')?.name = 'consumer'
+include 'example:provider'
+findProject(':example:provider')?.name = 'provider'
+include 'example:api'
+findProject(':example:api')?.name = 'api'
 

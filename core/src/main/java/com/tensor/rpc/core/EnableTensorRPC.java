@@ -14,8 +14,8 @@ import java.lang.annotation.*;
 @Inherited
 public @interface EnableTensorRPC {
 
-    String server();
-    String ip();
-    int port();
+    String server() default "";
+    String ip() default "";
+    int port() default 8080;
 
 }

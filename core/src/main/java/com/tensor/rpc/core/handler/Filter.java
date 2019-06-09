@@ -14,7 +14,7 @@ public interface Filter {
      * @param chain
      * @return
      */
-    void filter(RpcExchange exchange, FilterChain chain);
+    void filter(RpcExchange exchange, FilterChain chain) throws InterruptedException;
 
     /**
      * only can be {@link Integer}
